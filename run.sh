@@ -2,7 +2,7 @@
 
 # thanks https://serverfault.com/a/649619
 addSambaShare() {
-	local sharename="$1"
+	local shareName="$1"
 	local path="$2"
 
 	# [joonas]
@@ -10,9 +10,9 @@ addSambaShare() {
 	#   browseable = yes
 	#   read only = no
 	#   valid users = joonas
-	echo -e "[$sharename]\n  path = $path\n  browseable = yes\n  read only = no\n  valid users = $SMB_USERNAME\n" > "/etc/samba/smb.d/$sharename.conf"
+	echo -e "[$shareName]\n  path = $path\n  browseable = yes\n  read only = no\n  valid users = $SMB_USERNAME\n" > "/etc/samba/smb.d/$shareName.conf"
 
-	echo "include = /etc/samba/smb.d/$sharename.conf" >> /etc/samba/includes.conf
+	echo "include = /etc/samba/smb.d/$shareName.conf" >> /etc/samba/includes.conf
 }
 
 addSambaUser() {
@@ -30,9 +30,10 @@ echo "" > /etc/samba/includes.conf
 directories=/samba-private/*
 for directory in $directories
 do
-	directoryBasename=$(basename "$directory")
+	# "/samba-private/foobar" => "foobar"
+	shareName=$(basename "$directory")
 
-	addSambaShare "$directoryBasename" "$directory"
+	addSambaShare "$shareName" "$directory"
 done
 
 addSambaUser "$SMB_USERNAME" "$SMB_PASSWORD"
