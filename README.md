@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/joonas-fi/samba.svg?style=for-the-badge)](https://travis-ci.org/joonas-fi/samba)
+![Build status](https://github.com/joonas-fi/samba/workflows/Build/badge.svg)
 [![Download](https://img.shields.io/docker/pulls/joonas/samba.svg?style=for-the-badge)](https://hub.docker.com/r/joonas/samba/)
 
 Samba, contained - as all things should be.
