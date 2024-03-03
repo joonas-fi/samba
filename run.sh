@@ -42,4 +42,4 @@ addSambaUser "$SMB_USERNAME" "$SMB_PASSWORD"
 unset "SMB_PASSWORD"
 
 # for --no-process-group see https://stackoverflow.com/questions/49357524/docker-alpine-samba-does-not-start
-exec smbd --foreground --no-process-group --log-stdout
+exec smbd --foreground --no-process-group --debug-stdout
