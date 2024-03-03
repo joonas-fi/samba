@@ -24,19 +24,26 @@ addSambaUser() {
 	echo -e "$password\n$password" | smbpasswd -s -a "$username"
 }
 
-mkdir -p /etc/samba/smb.d
-echo "" > /etc/samba/includes.conf
+setupDoneFlagFile="/setup_done"
 
-directories=/samba-private/*
-for directory in $directories
-do
-	# "/samba-private/foobar" => "foobar"
-	shareName=$(basename "$directory")
+# do this only once so that if the container is restarted, we don't try to do this twice.
+if [ ! -f "$setupDoneFlagFile" ]; then
+	mkdir -p /etc/samba/smb.d
+	echo "" > /etc/samba/includes.conf
 
-	addSambaShare "$shareName" "$directory"
-done
+	addSambaUser "$SMB_USERNAME" "$SMB_PASSWORD"
 
-addSambaUser "$SMB_USERNAME" "$SMB_PASSWORD"
+	directories=/samba-private/*
+	for directory in $directories
+	do
+		# "/samba-private/foobar" => "foobar"
+		shareName=$(basename "$directory")
+
+		addSambaShare "$shareName" "$directory"
+	done
+
+	touch "$setupDoneFlagFile"
+fi
 
 # for security, let's unset the ENV var containing secrets
 unset "SMB_PASSWORD"
